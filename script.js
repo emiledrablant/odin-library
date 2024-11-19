@@ -6,19 +6,39 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
+    this.id;
 }
 
 function addBookToLibrary(title, author, pages, read) {
     let newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
-    const div = document.createElement("div");
-    const breaker = document.createElement("br");
-    div.textContent = `${title} by ${author} : ${pages} pages in total. Read status : ${read}`;
-    container.appendChild(div);
-    container.appendChild(breaker);
+    newBook.id = myLibrary.length;
 }
 
+function populateLibrary() {
+    for (book of myLibrary) {
+        const div = document.createElement("div");
+        div.classList.add(book.id);
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent = `${book.id} : ${book.title} by ${book.author} : ${book.pages} pages in total. Read status : ${book.read}`;
+        
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete this book.";
+        deleteButton.onclick = function() {
+            container.removeChild(div);
+        };
+
+        const breaker = document.createElement("br");
+        
+        div.appendChild(paragraph);
+        div.appendChild(deleteButton);
+        div.appendChild(breaker);
+        container.appendChild(div);
+    }
+}
 
 addBookToLibrary("The Hobbit", "Tolkien", 450, true);
 addBookToLibrary("Harry Potter", "J.K. Rowling", 200, false);
-console.log(myLibrary);
+addBookToLibrary("Le Petit Prince", "Antoine de Saint-Exupéry", 140, true);
+populateLibrary();
