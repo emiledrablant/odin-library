@@ -10,59 +10,62 @@ function Book(title, author, pages, read) {
     this.id;
 }
 
-function addBookToLibrary(title, author, pages, read) {
-    let newBook = new Book(title, author, pages, read);
-    myLibrary.push(newBook);
-    newBook.id = myLibrary.length;
+Book.prototype.changeReadStatus = function(readingStatus) {
+    if (readingStatus === "on") {
+        this.read = true;
+    } else {
+        this.read = false;
+    }
 }
 
-function populateLibrary() {
-    for (const book of myLibrary) {
-        const div = document.createElement("div");
-        div.classList.add(book.id);
+function addBookToLibrary(title, author, pages, read) {
+    let book = new Book(title, author, pages, read);
+    myLibrary.push(book);
+    book.id = myLibrary.length;
 
-        const paragraph = document.createElement("p");
-        paragraph.textContent = `${book.id} : ${book.title} by ${book.author} : ${book.pages} pages in total. Read status : ${book.read}`;
-        
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete this book.";
-        deleteButton.addEventListener("click", function() {
-            container.removeChild(div);
-        });
+    const div = document.createElement("div");
+    div.classList.add(book.id);
 
-        const readStatusButton = document.createElement("button");
+    const paragraph = document.createElement("p");
+    paragraph.textContent = `${book.id} : ${book.title} by ${book.author} : ${book.pages} pages in total. Read status : ${book.read}`;
+    
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete this book.";
+    deleteButton.addEventListener("click", function() {
+        container.removeChild(div);
+    });
 
-        function readStatusSetter() {
-            if (book.read) {
-                readStatusButton.textContent = "unread";
-                readStatusButton.classList.add("unread");
-                readStatusButton.classList.remove("read");
-            } else {
-                readStatusButton.textContent = "read";
-                readStatusButton.classList.add("read");
-                readStatusButton.classList.remove("unread");
-            }
-            book.read = !book.read;
+    const readStatusButton = document.createElement("button");
+
+    function readStatusSetter() {
+        if (book.read) {
+            readStatusButton.textContent = "unread";
+            readStatusButton.classList.add("unread");
+            readStatusButton.classList.remove("read");
+        } else {
+            readStatusButton.textContent = "read";
+            readStatusButton.classList.add("read");
+            readStatusButton.classList.remove("unread");
         }
-
-        readStatusSetter();
-        readStatusButton.addEventListener("click", readStatusSetter);
-
-
-        const breaker = document.createElement("br");
-        
-        div.appendChild(paragraph);
-        div.appendChild(deleteButton);
-        div.appendChild(readStatusButton);
-        div.appendChild(breaker);
-        container.appendChild(div);
+        book.read = !book.read;
     }
+
+    readStatusSetter();
+    readStatusButton.addEventListener("click", readStatusSetter);
+
+
+    const breaker = document.createElement("br");
+    
+    div.appendChild(paragraph);
+    div.appendChild(deleteButton);
+    div.appendChild(readStatusButton);
+    div.appendChild(breaker);
+    container.appendChild(div);
 }
 
 addBookToLibrary("The Hobbit", "Tolkien", 450, true);
 addBookToLibrary("Harry Potter", "J.K. Rowling", 200, false);
 addBookToLibrary("Le Petit Prince", "Antoine de Saint-Exupéry", 140, true);
-populateLibrary();
 
 const addBook = document.getElementById("addBook");
 const bookDialog = document.getElementById("bookDialog");
@@ -83,7 +86,7 @@ cancelBtn.addEventListener("click", (event) => {
 
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    addBookToLibrary(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.value);
-    populateLibrary();
+    addBookToLibrary(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.checked);
+    document.getElementById("bookForm").reset();
     bookDialog.close();
 });
