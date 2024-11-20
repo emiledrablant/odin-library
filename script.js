@@ -19,20 +19,43 @@ function populateLibrary() {
     for (book of myLibrary) {
         const div = document.createElement("div");
         div.classList.add(book.id);
+        console.log(book.id); /* Works correctly (1, 2, 3) */
 
         const paragraph = document.createElement("p");
         paragraph.textContent = `${book.id} : ${book.title} by ${book.author} : ${book.pages} pages in total. Read status : ${book.read}`;
         
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete this book.";
-        deleteButton.onclick = function() {
+        deleteButton.addEventListener("click", function() {
             container.removeChild(div);
-        };
+            console.log(book.id); /* Removes the correct div but always log "3"... Why? */
+        })
+
+        const readStatusButton = document.createElement("button");
+
+        function readStatusSetter() {
+            if (book.read) {
+                readStatusButton.textContent = "unread";
+                readStatusButton.classList.add("unread");
+                readStatusButton.classList.remove("read");
+                book.read = false;
+            } else {
+                readStatusButton.textContent = "read";
+                readStatusButton.classList.add("read");
+                readStatusButton.classList.remove("unread");
+                book.read = true;
+            }
+        }
+
+        readStatusSetter();
+        readStatusButton.addEventListener("click", readStatusSetter);
+
 
         const breaker = document.createElement("br");
         
         div.appendChild(paragraph);
         div.appendChild(deleteButton);
+        div.appendChild(readStatusButton);
         div.appendChild(breaker);
         container.appendChild(div);
     }

@@ -1,0 +1,11 @@
+button {
+    margin: auto 16px;
+}
+
+.read {
+    background-color: lightgreen;
+}
+
+.unread {
+    background-color: lightcoral;
+}
