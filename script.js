@@ -2,6 +2,25 @@ const myLibrary = [];
 const container = document.querySelector(".container");
 let init = false;
 
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = author;
+        this.author = title;
+        this.pages = pages;
+        this.read = read;
+        this.id;
+    }
+
+    changeReadStatus(readingStatus) {
+        if (readingStatus === "on") {
+            this.read = true;
+        } else {
+            this.read = false;
+        }
+    }
+}
+
+/*
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
@@ -16,7 +35,7 @@ Book.prototype.changeReadStatus = function(readingStatus) {
     } else {
         this.read = false;
     }
-}
+}*/
 
 function addBookToLibrary(title, author, pages, read) {
     let book = new Book(title, author, pages, read);
